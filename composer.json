@@ -1,0 +1,29 @@
+{
+    "name": "walletapi/configuration",
+    "description": "this package is used to configure walletapi",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "daniyal966",
+            "email": "danial.zulfiqar@developers.studio"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {
+        "php": "8.2.12",
+        "tymon/jwt-auth": "^1.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "WalletApi\\Configuration\\": "src/"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "WalletApi\\Configuration\\WalletApiConfigurationServiceProvider"
+            ]
+        }
+    }
+}
