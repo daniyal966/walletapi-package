@@ -22,7 +22,7 @@ class WalletApiConfigurationServiceProvider extends ServiceProvider {
         }
 
         $this->app->singleton('walletapi-configuration', function () {
-            return new AliceController(); // Replace with the actual class from your package
+            return new WalletApiController(); // Replace with the actual class from your package
         });
         $this->app['router']->aliasMiddleware('api_auth', Http\Middleware\ApiAuthencation::class);
 
