@@ -10,10 +10,7 @@
         }
     ],
     "minimum-stability": "dev",
-    "require": {
-        "php": "8.2.12",
-        "tymon/jwt-auth": "^1.0"
-    },
+    "require": {},
     "autoload": {
         "psr-4": {
             "WalletApi\\Configuration\\": "src/"
