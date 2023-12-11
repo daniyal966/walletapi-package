@@ -56,8 +56,14 @@ class WalletApiController extends Controller
     
     
 
-    public function token(TokenRequestValidation $request)
-    {   
+    public function token(Request $request)
+    {               
+        $requiredParameters = ['email','password'];
+        $validationResult = self::validateRequiredParameters($request, $requiredParameters);
+        if ($validationResult !== null) {
+            return $validationResult;
+        }
+
         $credentials = $request->only('email', 'password');
         
         try {
@@ -86,10 +92,15 @@ class WalletApiController extends Controller
      * @return JSON response
      */
     
-    public static function createAddress(CreateAddressValidation $request)
+    public static function createAddress(Request $request)
     {
 
         try {
+            $requiredParameters = ['altcoin','request_id','email'];
+            $validationResult = self::validateRequiredParameters($request, $requiredParameters);
+            if ($validationResult !== null) {
+                return $validationResult;
+            }
             $headers=$request->header()['authorization'][0];
             $url=config("package_constants.test_url");
             $payload=$request->all();
@@ -100,10 +111,15 @@ class WalletApiController extends Controller
             return response()->json(['error' => 'Something went wrong'], 500);
         }
     }
-    public static function transactionsAgainstAddress(AddressTransactionValidation $request)
+    public static function transactionsAgainstAddress(Request $request)
     {
 
         try {
+            $requiredParameters = ['address'];
+            $validationResult = self::validateRequiredParameters($request, $requiredParameters);
+            if ($validationResult !== null) {
+                return $validationResult;
+            }
             $headers=$request->header()['authorization'][0];
             $url=config("package_constants.test_url");
             $payload=$request->all();
@@ -115,10 +131,15 @@ class WalletApiController extends Controller
         }
     }
 
-    public static function getAddresses(UserAddressesValidation $request)
+    public static function getAddresses(Request $request)
     {
 
         try {
+            $requiredParameters = ['email','altcoin','fields'];
+            $validationResult = self::validateRequiredParameters($request, $requiredParameters);
+            if ($validationResult !== null) {
+                return $validationResult;
+            }
             $headers=$request->header()['authorization'][0];
             $url=config("package_constants.test_url");
             $payload=$request->all();
@@ -129,10 +150,15 @@ class WalletApiController extends Controller
             return response()->json(['error' => 'Something went wrong'], 500);
         }
     }
-    public static function validateAddress(AddressValidation $request)
+    public static function validateAddress(Request $request)
     {
 
         try {
+            $requiredParameters = ['address','altcoin'];
+            $validationResult = self::validateRequiredParameters($request, $requiredParameters);
+            if ($validationResult !== null) {
+                return $validationResult;
+            }
             $headers=$request->header()['authorization'][0];
             $url=config("package_constants.test_url");
             $payload=$request->all();
@@ -143,10 +169,15 @@ class WalletApiController extends Controller
             return response()->json(['error' => 'Something went wrong'], 500);
         }
     }
-    public static function getReceivedByAddress(AddressValidation $request)
+    public static function getReceivedByAddress(Request $request)
     {
 
         try {
+            $requiredParameters = ['address','altcoin'];
+            $validationResult = self::validateRequiredParameters($request, $requiredParameters);
+            if ($validationResult !== null) {
+                return $validationResult;
+            }
             $headers=$request->header()['authorization'][0];
             $url=config("package_constants.test_url");
             $payload=$request->all();
@@ -158,10 +189,15 @@ class WalletApiController extends Controller
         }
     }
 
-    public static function storeLabel(LabelValidation $request)
+    public static function storeLabel(Request $request)
     {
 
         try {
+            $requiredParameters = ['label','altcoin','address'];
+            $validationResult = self::validateRequiredParameters($request, $requiredParameters);
+            if ($validationResult !== null) {
+                return $validationResult;
+            }
             $headers=$request->header()['authorization'][0];
             $url=config("package_constants.test_url");
             $payload=$request->all();
@@ -172,10 +208,15 @@ class WalletApiController extends Controller
             return response()->json(['error' => 'Something went wrong'], 500);
         }
     }
-    public static function getAddressByLabel(AddressByLabelValidation $request)
+    public static function getAddressByLabel(Request $request)
     {
 
         try {
+            $requiredParameters = ['label','altcoin','email'];
+            $validationResult = self::validateRequiredParameters($request, $requiredParameters);
+            if ($validationResult !== null) {
+                return $validationResult;
+            }
             $headers=$request->header()['authorization'][0];
             $url=config("package_constants.test_url");
             $payload=$request->all();
