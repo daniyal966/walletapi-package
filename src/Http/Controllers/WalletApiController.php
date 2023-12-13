@@ -12,45 +12,6 @@ use Illuminate\Support\Facades\DB;
 use WalletApi\Configuration\Models\Affiliate;
 use WalletApi\Configuration\Http\Requests\TokenRequestValidation;
 
-
-
-use WalletApi\Configuration\Models\User;
-use WalletApi\Configuration\Models\UserWallet;
-use WalletApi\Configuration\Models\Transactions;
-use WalletApi\Configuration\Models\UserInformation;
-use WalletApi\Configuration\Models\APIModel;
-use WalletApi\Configuration\Models\Address;
-use WalletApi\Configuration\Models\ErrorLog;
-use WalletApi\Configuration\Models\Rate;
-use WalletApi\Configuration\Models\Transaction;
-use WalletApi\Configuration\Models\ApiToken;
-use WalletApi\Configuration\Models\NFTTransaction;
-use WalletApi\Configuration\Http\Requests\AddressByLabelValidation;
-use WalletApi\Configuration\Http\Requests\SendCryptoValidation;
-use WalletApi\Configuration\Http\Requests\AddressTransactionValidation;
-use WalletApi\Configuration\Http\Requests\CreateAddressValidation;
-use WalletApi\Configuration\Http\Requests\BuySellContractValidation;
-use WalletApi\Configuration\Http\Requests\GetWalletValidation;
-use WalletApi\Configuration\Http\Requests\SendManyCryptoValidation;
-use WalletApi\Configuration\Http\Requests\VerifyChainValidation;
-use WalletApi\Configuration\Http\Requests\UserAddressesValidation;
-use WalletApi\Configuration\Http\Requests\CreateWalletValidation;
-use WalletApi\Configuration\Http\Requests\CreateUserValidation;
-use WalletApi\Configuration\Http\Requests\AltcoinValidation;
-use WalletApi\Configuration\Http\Requests\AddressValidation;
-use WalletApi\Configuration\Http\Requests\DirectFlowValidation;
-use WalletApi\Configuration\Http\Requests\GetTransactionValidation;
-use WalletApi\Configuration\Http\Requests\LabelValidation;
-use WalletApi\Configuration\Http\Requests\TagValidation;
-use WalletApi\Configuration\Http\Requests\DirectTransactionsValidation;
-use WalletApi\Configuration\Http\Requests\SingleQuantozTransactionValidation;
-use WalletApi\Configuration\Http\Requests\AssetsValidation;
-use WalletApi\Configuration\Models\QuantozOrder;
-use WalletApi\Configuration\Models\AddressBalance;
-use WalletApi\Configuration\Models\NftRequests;
-
-
-
 class WalletApiController extends Controller
 {
     
@@ -130,7 +91,7 @@ class WalletApiController extends Controller
             return response()->json(['error' => 'Something went wrong'], 500);
         }
     }
-
+ 
     public static function getAddresses(Request $request)
     {
 
@@ -210,7 +171,6 @@ class WalletApiController extends Controller
     }
     public static function getAddressByLabel(Request $request)
     {
-
         try {
             $requiredParameters = ['label','altcoin','email'];
             $validationResult = self::validateRequiredParameters($request, $requiredParameters);
@@ -221,6 +181,103 @@ class WalletApiController extends Controller
             $url=config("package_constants.test_url");
             $payload=$request->all();
             $address = curlRequest($url . 'address_by_label', json_encode($payload), TRUE,$headers = ["Authorization: Bearer $headers",'Content-Type: application/json','Accept:application/json'],false);
+            $decode_data = json_decode($address['body'], true);
+            return response()->json( $decode_data,200);
+        } catch (\Throwable $e) {
+            return response()->json(['error' => 'Something went wrong'], 500);
+        }
+    }
+
+    // transactions
+
+    public static function getTransactionData(Request $request)
+    {
+        try {
+            $requiredParameters = ['email','fields','altcoin'];
+            $validationResult = self::validateRequiredParameters($request, $requiredParameters);
+            if ($validationResult !== null) {
+                return $validationResult;
+            }
+            $headers=$request->header()['authorization'][0];
+            $url=config("package_constants.test_url");
+            $payload=$request->all();
+            $address = curlRequest($url . 'transactions', json_encode($payload), TRUE,$headers = ["Authorization: Bearer $headers",'Content-Type: application/json','Accept:application/json'],false);
+            $decode_data = json_decode($address['body'], true);
+            return response()->json( $decode_data,200);
+        } catch (\Throwable $e) {
+            return response()->json(['error' => 'Something went wrong'], 500);
+        }
+    }
+    
+    public static function sendCrypto(Request $request)
+    {
+        try {
+            $requiredParameters = ['altcoin','to_address','from_address','crypto_currency','amount','email'];
+            $validationResult = self::validateRequiredParameters($request, $requiredParameters);
+            if ($validationResult !== null) {
+                return $validationResult;
+            }
+            $headers=$request->header()['authorization'][0];
+            $url=config("package_constants.test_url");
+            $payload=$request->all();
+            $address = curlRequest($url . 'send_crypto', json_encode($payload), TRUE,$headers = ["Authorization: Bearer $headers",'Content-Type: application/json','Accept:application/json'],false);
+            $decode_data = json_decode($address['body'], true);
+            return response()->json( $decode_data,200);
+        } catch (\Throwable $e) {
+            return response()->json(['error' => 'Something went wrong'], 500);
+        }
+    }
+    
+    public static function sendManyCryptos(Request $request)
+    {
+        try {
+            $requiredParameters = ['altcoin','batch_id','callback_url','transactions'];
+            $validationResult = self::validateRequiredParameters($request, $requiredParameters);
+            if ($validationResult !== null) {
+                return $validationResult;
+            }
+            $headers=$request->header()['authorization'][0];
+            $url=config("package_constants.test_url");
+            $payload=$request->all();
+            $address = curlRequest($url . 'send_many_crypto', json_encode($payload), TRUE,$headers = ["Authorization: Bearer $headers",'Content-Type: application/json','Accept:application/json'],false);
+            $decode_data = json_decode($address['body'], true);
+            return response()->json( $decode_data,200);
+        } catch (\Throwable $e) {
+            return response()->json(['error' => 'Something went wrong'], 500);
+        }
+    }
+    
+    public static function getReserve(Request $request)
+    {
+        try {
+            $requiredParameters = ['altcoin'];
+            $validationResult = self::validateRequiredParameters($request, $requiredParameters);
+            if ($validationResult !== null) {
+                return $validationResult;
+            }
+            $headers=$request->header()['authorization'][0];
+            $url=config("package_constants.test_url");
+            $payload=$request->all();
+            $address = curlRequest($url . 'get_reserves', json_encode($payload), TRUE,$headers = ["Authorization: Bearer $headers",'Content-Type: application/json','Accept:application/json'],false);
+            $decode_data = json_decode($address['body'], true);
+            return response()->json( $decode_data,200);
+        } catch (\Throwable $e) {
+            return response()->json(['error' => 'Something went wrong'], 500);
+        }
+    }
+    
+    public static function cleanPayDirectBuyContract(Request $request)
+    {
+        try {
+            $requiredParameters = ['email','merchant_email','request_id','fiat_amount','callback_url','fiat_currency','altcoin','customer_ip','trx_id','psp_mid','contract','flow_wallet'];
+            $validationResult = self::validateRequiredParameters($request, $requiredParameters);
+            if ($validationResult !== null) {
+                return $validationResult;
+            }
+            $headers=$request->header()['authorization'][0];
+            $url=config("package_constants.test_url");
+            $payload=$request->all();
+            $address = curlRequest($url . 'buy_sell_contract', json_encode($payload), TRUE,$headers = ["Authorization: Bearer $headers",'Content-Type: application/json','Accept:application/json'],false);
             $decode_data = json_decode($address['body'], true);
             return response()->json( $decode_data,200);
         } catch (\Throwable $e) {

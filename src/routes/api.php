@@ -16,7 +16,19 @@ Route::group(['namespace'=>'WalletApi\Configuration\Http\Controllers'], function
     Route::post('set_label', [WalletApiController::class , 'storeLabel']);
     Route::post('address_by_label',[WalletApiController::class, 'getAddressByLabel']);
 
-    
+    // transaction
+
+    Route::post('transactions', [WalletApiController::class, 'getTransactionData']);
+    Route::post('send_crypto',[WalletApiController::class, 'sendCrypto']);
+    Route::post('send_many_crypto',[WalletApiController::class, 'sendManyCryptos']);
+    Route::get('get_reserves',[WalletApiController::class, 'getReserve']);
+
+    Route::post('buy_sell_contract', [WalletApiController::class, 'cleanPayDirectBuyContract']);
+
+
+
+
+
 
 
 
